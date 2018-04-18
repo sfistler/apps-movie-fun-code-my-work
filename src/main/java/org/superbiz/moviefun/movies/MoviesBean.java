@@ -19,6 +19,7 @@ package org.superbiz.moviefun.movies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -34,11 +35,11 @@ import java.util.List;
 @Repository
 public class MoviesBean {
 
-    @PersistenceContext (unitName = "moviesDataSource")
+    @PersistenceContext (unitName = "movies")
     private EntityManager entityManager;
 
     @Autowired
-    private JpaTransactionManager moviesPlatformTransactionManager;
+    private PlatformTransactionManager moviesTransactionManager;
 
     public Movie find(Long id) {
         return entityManager.find(Movie.class, id);
@@ -46,7 +47,7 @@ public class MoviesBean {
 
     //@Transactional
     public void addMovie(Movie movie) {
-        TransactionTemplate moviesTransactionTemplate= new TransactionTemplate(moviesPlatformTransactionManager);
+        TransactionTemplate moviesTransactionTemplate= new TransactionTemplate(moviesTransactionManager);
         moviesTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
             protected void doInTransactionWithoutResult(TransactionStatus status) {
                 entityManager.persist(movie);

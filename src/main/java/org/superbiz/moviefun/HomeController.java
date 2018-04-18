@@ -3,6 +3,7 @@ package org.superbiz.moviefun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -23,10 +24,12 @@ public class HomeController {
     private final AlbumsBean albumsBean;
     private final MovieFixtures movieFixtures;
     private final AlbumFixtures albumFixtures;
+
     @Autowired
-    private JpaTransactionManager moviesPlatformTransactionManager;
+    private PlatformTransactionManager moviesTransactionManager;
+
     @Autowired
-    private JpaTransactionManager albumsPlatformTransactionManager;
+    private PlatformTransactionManager albumsTransactionManager;
 
     public HomeController(MoviesBean moviesBean, AlbumsBean albumsBean, MovieFixtures movieFixtures, AlbumFixtures albumFixtures) {
         this.moviesBean = moviesBean;
